@@ -1,7 +1,7 @@
-from ..transactions import signer_from_seed, TransactionBody, GeneralTransaction
+from ..transactions import Signer, TransactionBody, GeneralTransaction
 
-alice = signer_from_seed("alice")
-bob = signer_from_seed("bob")
+alice = Signer.from_seed("alice")
+bob = Signer.from_seed("bob")
 
 
 def assert_equal_tx_body(a: TransactionBody, b: TransactionBody):

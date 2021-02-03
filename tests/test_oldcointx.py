@@ -1,4 +1,4 @@
-from ..transactions import sign, decode, Address, OldCoinTx
+from ..transactions import decode, Address, OldCoinTx
 from .test_util import alice, bob, assert_equal_tx
 
 
@@ -18,7 +18,7 @@ def test_incomplete_oldcointx_str():
 
 def test_complete_oldcointx_str():
     ft = OldCoinTx(recipient=bob.address, nonce=0, amount=100, gas_limit=2, fee=1)
-    tx = sign(ft.new_ed(), alice)
+    tx = ft.new_ed().sign(alice)
     assert str(tx) == "Transaction(tx_type=OLD_COIN_ED_TX, body=OldCoinTx(nonce=0, recipient=" + \
            str(bob.address) + ", amount=100, gas_limit=2, fee=1), " + \
            "signature=" + str(tx.signature) + ", " + \
@@ -28,7 +28,7 @@ def test_complete_oldcointx_str():
 def test_oldcoin_transaction():
     ft = OldCoinTx(recipient=bob.address, nonce=0, amount=100, gas_limit=2, fee=1)
     ftx = ft.new_ed()
-    stx = ftx.message.sign(alice)
+    stx = ftx.encode(alice)
     tx = decode(stx)
     assert_equal_tx(ftx, tx)
 
@@ -125,9 +125,9 @@ cases = [
 
 def test_oldcointx_binary_encode():
     for ft, signed_ed, signed_edp in cases:
-        tx_ed = ft.new_ed().message.sign(cases_signer)
+        tx_ed = ft.new_ed().encode(cases_signer)
         assert tx_ed == signed_ed
-        tx_edp = ft.new_ed_plus().message.sign(cases_signer)
+        tx_edp = ft.new_ed_plus().encode(cases_signer)
         assert tx_edp == signed_edp
 
 

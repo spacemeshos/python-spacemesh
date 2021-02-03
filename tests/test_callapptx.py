@@ -1,4 +1,4 @@
-from ..transactions import sign, decode, Address, CallAppTx
+from ..transactions import decode, Address, CallAppTx
 from .test_util import alice, bob, assert_equal_tx
 from ..transactions.transaction import ENABLE_TRANSACTION_PRUNING
 
@@ -24,7 +24,7 @@ def test_incomplete_callapptx_str():
 
 def test_complete_callapptx_str():
     ft = CallAppTx(ttl=0, app_address=bob.address, nonce=0, amount=100, gas_limit=2, gas_price=1, call_data=bytes())
-    tx = sign(ft.new_ed(), alice)
+    tx = ft.new_ed().sign(alice)
     assert str(tx) == "Transaction(tx_type=CALL_APP_ED_TX, body=CallAppTx(ttl=0, nonce=0, app_address=" + \
            str(bob.address) + ", amount=100, gas_limit=2, gas_price=1), " + \
            "signature=" + str(tx.signature) + ", " + \
@@ -34,7 +34,7 @@ def test_complete_callapptx_str():
 def test_callapp_transaction():
     ft = CallAppTx(ttl=0, app_address=bob.address, nonce=0, amount=100, gas_limit=2, gas_price=1, call_data=bytes())
     ftx = ft.new_ed()
-    stx = ftx.message.sign(alice)
+    stx = ftx.encode(alice)
     tx = decode(stx)
     assert_equal_tx(ftx, tx)
 
@@ -195,9 +195,9 @@ cases = [
 
 def test_callapptx_binary_encode():
     for ft, signed_ed, signed_edp in cases:
-        tx_ed = ft.new_ed().message.sign(cases_signer)
+        tx_ed = ft.new_ed().encode(cases_signer)
         assert tx_ed == signed_ed
-        tx_edp = ft.new_ed_plus().message.sign(cases_signer)
+        tx_edp = ft.new_ed_plus().encode(cases_signer)
         assert tx_edp == signed_edp
 
 

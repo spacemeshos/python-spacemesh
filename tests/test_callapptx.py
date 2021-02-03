@@ -1,5 +1,5 @@
 from ..transactions import decode, Address, CallAppTx
-from .test_util import alice, bob, assert_equal_tx
+from .test_util import alice, bob, assert_equal_tx, assert_transaction_equal_to_body
 from ..transactions.transaction import ENABLE_TRANSACTION_PRUNING
 
 
@@ -37,7 +37,7 @@ def test_callapp_transaction():
     stx = ftx.encode(alice)
     tx = decode(stx)
     assert_equal_tx(ftx, tx)
-
+    assert_transaction_equal_to_body(tx)
 
 cases_signer = alice
 

@@ -131,11 +131,11 @@ class GeneralTransaction:
         return self.body.get_ttl()
 
     @property
-    def get_amount(self) -> int:
+    def amount(self) -> int:
         return self.body.get_amount()
 
     @property
-    def get_nonce(self) -> int:
+    def nonce(self) -> int:
         return self.body.get_nonce()
 
     @property

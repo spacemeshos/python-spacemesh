@@ -1,5 +1,5 @@
 from ..transactions import decode, Address, OldCoinTx
-from .test_util import alice, bob, assert_equal_tx
+from .test_util import alice, bob, assert_equal_tx, assert_transaction_equal_to_body
 
 
 def test_oldcointx_str():
@@ -31,7 +31,7 @@ def test_oldcoin_transaction():
     stx = ftx.encode(alice)
     tx = decode(stx)
     assert_equal_tx(ftx, tx)
-
+    assert_transaction_equal_to_body(tx)
 
 cases_signer = alice
 
